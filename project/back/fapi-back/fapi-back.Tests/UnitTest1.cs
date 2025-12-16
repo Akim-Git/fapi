@@ -53,7 +53,7 @@ public class OrdersControllerUnitTests
     }
 }
 
-// Fake kurz (a netestuješ reálné ÈNB)
+// Fake kurz (a netestuje reálné ÈNB)
 public sealed class FakeRateService : IRateService
 {
     public Task<Dictionary<string, decimal>> GetRatesCzkPerUnitAsync(CancellationToken ct)
