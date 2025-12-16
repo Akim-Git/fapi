@@ -1,0 +1,6 @@
+@fapi_back_HostAddress = http://localhost:5186
+
+GET {{fapi_back_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

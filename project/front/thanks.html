@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Děkujeme</title>
+  <link rel="stylesheet" href="front.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Děkujeme za objednávku</h1>
+
+    <section id="content" class="card">
+      <p>Načítám rekapitulaci…</p>
+    </section>
+
+    <p><a href="./index.html">Vytvořit novou objednávku</a></p>
+  </main>
+
+  <script>
+    const API_BASE = "https://localhost:7242";
+
+    function escapeHtml(s){return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
+
+    async function run() {
+      const params = new URLSearchParams(location.search);
+      const id = params.get("id");
+      const content = document.getElementById("content");
+
+      if (!id) {
+        content.innerHTML = "<p class='error'>Chybí id objednávky v URL (?id=...).</p>";
+        return;
+      }
+
+      // načti objednávku
+      const or = await fetch(`${API_BASE}/api/orders/${encodeURIComponent(id)}`);
+      if (!or.ok) {
+        content.innerHTML = "<p class='error'>Objednávka nenalezena.</p>";
+        return;
+      }
+      const order = await or.json();
+
+      // objednávka obsahuje CustomerId + Items a Total (dle tvého modelu)
+      // pro rekapitulaci produktů si dotáhneme katalog:
+      const pr = await fetch(`${API_BASE}/api/products`);
+      const products = pr.ok ? await pr.json() : [];
+      const pMap = new Map(products.map(p => [p.id, p]));
+
+      // spočítáme si CZK rekapitulaci z itemů (pro přehled na stránce)
+      // NOTE: pokud backend ukládá Total už v cílové měně, zobrazíme ho jako "Celkem v měně".
+      let subtotalCzk = 0;
+      const lines = (order.items || []).map(it => {
+        const p = pMap.get(it.productId);
+        const unit = p ? Number(p.price) : 0;
+        const line = unit * Number(it.quantity || 0);
+        subtotalCzk += line;
+        return { it, p, unit, line };
+      });
+
+      const vatRate = 0.21;
+      const vatCzk = Math.round((subtotalCzk * vatRate + Number.EPSILON) * 100) / 100;
+      const totalCzk = Math.round((subtotalCzk + vatCzk + Number.EPSILON) * 100) / 100;
+
+      content.innerHTML = `
+        <h2>Rekapitulace objednávky</h2>
+
+        <h3>Položky</h3>
+        ${lines.length ? `
+          <ul>
+            ${lines.map(x => `
+              <li>
+                ${escapeHtml(x.p?.name ?? ("ProductId: " + x.it.productId))} —
+                ${x.unit} CZK × ${x.it.quantity} ks =
+                <b>${x.line} CZK</b>
+              </li>
+            `).join("")}
+          </ul>
+        ` : "<p>Žádné položky.</p>"}
+
+        <h3>Výpočet ceny (CZK)</h3>
+        <p>
+          Mezisoučet: <b>${subtotalCzk} CZK</b><br/>
+          DPH (21%): <b>${vatCzk} CZK</b><br/>
+          Celkem: <b>${totalCzk} CZK</b>
+        </p>
+
+        <h3>Přepočet dle ČNB</h3>
+        <p>
+          Cílová měna: <b>${escapeHtml(order.targetCurrency || "CZK")}</b><br/>
+          Celkem v cílové měně (uloženo v objednávce): <b>${order.total} ${escapeHtml(order.targetCurrency || "CZK")}</b>
+        </p>
+
+        <details>
+          <summary>Debug (uložený OrderRequest JSON)</summary>
+          <pre>${escapeHtml(JSON.stringify(order, null, 2))}</pre>
+        </details>
+      `;
+    }
+
+    run().catch(() => {
+      document.getElementById("content").innerHTML = "<p class='error'>Chyba při načítání dat.</p>";
+    });
+  </script>
+</body>
+</html>

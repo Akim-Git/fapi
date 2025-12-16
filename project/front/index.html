@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Objednávka</title>
+  <link rel="stylesheet" href="front.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Objednávka</h1>
+
+    <form id="orderForm" class="card">
+      <h2>Osobní údaje</h2>
+
+      <div class="grid2">
+        <label>
+          Jméno a příjmení
+          <input name="fullName" autocomplete="name" />
+          <small class="error" data-err="fullName"></small>
+        </label>
+
+        <label>
+          E-mail
+          <input name="email" autocomplete="email" />
+          <small class="error" data-err="email"></small>
+        </label>
+
+        <label>
+          Telefon
+          <input name="phone" autocomplete="tel" />
+          <small class="error" data-err="phone"></small>
+        </label>
+
+        <label>
+          Adresa
+          <input name="address" autocomplete="street-address" />
+          <small class="error" data-err="address"></small>
+        </label>
+      </div>
+
+      <h2>Košík</h2>
+
+      <div class="row">
+        <label style="min-width: 280px;">
+          Produkt
+          <select id="productPick"></select>
+        </label>
+
+        <label>
+          Množství
+          <input id="productQty" type="number" min="1" max="999" value="1" />
+        </label>
+
+        <button type="button" id="addToCartBtn">Přidat do košíku</button>
+      </div>
+
+      <small class="error" data-err="items"></small>
+
+      <table aria-label="Košík">
+        <thead>
+          <tr>
+            <th>Produkt</th>
+            <th class="right">Cena/ks (CZK)</th>
+            <th class="right">Množství</th>
+            <th class="right">Mezisoučet</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="cartBody">
+          <tr><td colspan="5">Košík je prázdný.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="grid2" style="margin-top: 12px;">
+        <label>
+          Cílová měna (CZK/EUR/USD…)
+          <input name="targetCurrency" id="targetCurrency" value="CZK" />
+          <small class="error" data-err="targetCurrency"></small>
+        </label>
+      </div>
+
+      <section class="quote">
+        <h3>Automatický přepočet (celý košík)</h3>
+        <pre id="quoteBox">Přidej položky do košíku…</pre>
+        <small id="quoteErr" class="error"></small>
+      </section>
+
+      <button type="submit" id="submitBtn">Odeslat objednávku</button>
+      <small class="error" data-err="general"></small>
+    </form>
+  </main>
+
+  <script src="./order.js"></script>
+</body>
+</html>

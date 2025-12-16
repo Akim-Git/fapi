@@ -1,0 +1,150 @@
+:root {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: #fafafa;
+}
+
+/* layout */
+.container {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+h1, h2, h3 {
+  margin-top: 0;
+}
+
+/* card */
+.card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.04);
+}
+
+/* grid */
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+/* form */
+label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+input,
+select,
+button {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #4f7cff;
+  box-shadow: 0 0 0 2px rgba(79,124,255,.15);
+}
+
+/* buttons */
+button {
+  background: #4f7cff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: background .15s ease, transform .05s ease;
+}
+
+button:hover {
+  background: #3f68e8;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* helpers */
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.right {
+  text-align: right;
+}
+
+.muted {
+  color: #777;
+  font-size: 0.85rem;
+}
+
+.error {
+  color: #b00020;
+  font-size: 0.85rem;
+  min-height: 1.2em;
+}
+
+/* quote / summary */
+.quote {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed #ddd;
+}
+
+/* table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+th,
+td {
+  padding: 8px 6px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+th {
+  font-weight: 600;
+  color: #555;
+}
+
+td input {
+  width: 90px;
+}
+
+/* code / json */
+pre {
+  background: #f6f6f6;
+  padding: 12px;
+  border-radius: 10px;
+  overflow: auto;
+  font-size: 0.85rem;
+}
+
+/* responsive */
+@media (max-width: 720px) {
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+}

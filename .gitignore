@@ -1,0 +1,21 @@
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET build artifacts
+**/bin/
+**/obj/
+
+# Test results
+TestResults/
+*.testlog
+
+# Node (kdybys měl)
+node_modules/
+dist/
+build/
+.env
