@@ -17,8 +17,16 @@
     <p><a href="./index.html">Vytvořit novou objednávku</a></p>
   </main>
 
+
+
+<!-- thanks.html je jednoduchá read-only stránka, kde je inline skript přehlednější a nepřidává zbytečnou strukturu. -->
+
+
   <script>
-    const API_BASE = "https://localhost:7242";
+    const API_BASE =
+        (location.protocol === "file:" || location.hostname === "localhost")
+            ? "https://localhost:7242"
+            : "https://fapi-backend.onrender.com";
 
     function escapeHtml(s){return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
 
