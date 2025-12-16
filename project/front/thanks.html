@@ -98,10 +98,7 @@
           Celkem v cílové měně (uloženo v objednávce): <b>${order.total} ${escapeHtml(order.targetCurrency || "CZK")}</b>
         </p>
 
-        <details>
-          <summary>Debug (uložený OrderRequest JSON)</summary>
-          <pre>${escapeHtml(JSON.stringify(order, null, 2))}</pre>
-        </details>
+        
       `;
     }
 
